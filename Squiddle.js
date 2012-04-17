@@ -211,7 +211,7 @@ Squiddle.prototype.trigger = function(event, data, async)
         {
             console.log("Squiddle event triggered: " + event + 
                 "; Subscribers: " + len + 
-                "; Wildcard listeners: " + l + "; Data: ", data);
+                "; Data: ", data);
         }
         for (j = 0; j < len; ++j)
         {
