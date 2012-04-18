@@ -1,4 +1,4 @@
-var Squiddle = ( function ( console )
+var Squiddle = ( function( console )
 {
     "use strict";
     
@@ -9,7 +9,7 @@ var Squiddle = ( function ( console )
     
     var Sq, asyncThrow;
     
-    Sq = function ( args )
+    Sq = function( args )
     {
         args = args || {};
         
@@ -29,7 +29,7 @@ var Squiddle = ( function ( console )
         var self = this,
         errorListener;
         
-        errorListener = function ( data, info )
+        errorListener = function( data, info )
         {
             if ( self.debug !== true )
             {
@@ -43,8 +43,12 @@ var Squiddle = ( function ( console )
         this.subscribe( errorListener, "squiddle.error" );
     };
     
+    /**
     
-    Sq.prototype.subscribe = function ( listener, event )
+        <h2>Squiddle.subscribe( [Function] listener, [String] event )</h2>
+    
+    */
+    Sq.prototype.subscribe = function( listener, event )
     {
         if (typeof listener !== "function")
         {
@@ -63,7 +67,7 @@ var Squiddle = ( function ( console )
         );
     };
     
-    Sq.prototype.unsubscribe = function ( listener, event )
+    Sq.prototype.unsubscribe = function( listener, event )
     {
         event = event || '*';
         var cbs = this.callbacks[ event ] || [],
@@ -87,7 +91,7 @@ var Squiddle = ( function ( console )
     };
     
     
-    Sq.prototype.trigger = function ( event, data, async )
+    Sq.prototype.trigger = function( event, data, async )
     {
         data = data || null;
         async = async || true;
@@ -96,7 +100,7 @@ var Squiddle = ( function ( console )
         var cbs, len, info, j, f, cur, self = this;
         
         // get subscribers in all relevant namespaces
-        cbs = ( function ()
+        cbs = ( function()
         {
             var n, words, wc, matches, k, kc, old = "",
             out = [];
@@ -130,13 +134,13 @@ var Squiddle = ( function ( console )
         info = {
             event: event,
             subscribers: len,
-            getQueueLength: function ()
+            getQueueLength: function()
             {
                 return len - j;
             }
         };
         
-        asyncThrow = function(e)
+        asyncThrow = function( e )
         {
             setTimeout(        
                 function ()
@@ -148,7 +152,7 @@ var Squiddle = ( function ( console )
         };
             
         // function for iterating through the list of relevant listeners
-        f = function ()
+        f = function()
         {
             if ( self.log === true )
             {
@@ -171,9 +175,9 @@ var Squiddle = ( function ( console )
                             info: info
                         }
                     );
-                    if (self.interceptErrors !== true)
+                    if ( self.interceptErrors !== true )
                     {
-                        asyncThrow(e);
+                        asyncThrow( e );
                     }
                 }
             }
