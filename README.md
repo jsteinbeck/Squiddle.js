@@ -46,8 +46,9 @@ The counterpart to subscribe: Unsubscribes a listener from an event.
 Triggers an event so that all interested listeners get called and optionally receive 
 the data supplied by the second parameter. 
 
-If the first parameter (the event name) is ommited, "*" is assumed. Note: "*" will not call *all*
-listeners known to Squiddle but rather only the listeners explicitly subscribed to "*".
+If the first parameter (the event name) is ommited, "*" is assumed. 
+Note: "*" will not call __all__ listeners known to Squiddle but rather only the listeners 
+explicitly subscribed to the wildcard event.
 
 Parameter data can be anything you want the listeners to receive.
 
