@@ -44,7 +44,12 @@ The counterpart to subscribe: Unsubscribes a listener from an event.
 ### [Function] Squiddle.prototype.trigger( [String] event+, [Mixed] data+, [Boolean] async+ ) ###
 
 Triggers an event so that all interested listeners get called and optionally receive 
-the data supplied by the second parameter. Parameter data can be anything you want.
+the data supplied by the second parameter. 
+
+If the first parameter (the event name) is ommited, "*" is assumed. Note: "*" will not call *all*
+listeners known to Squiddle but rather only the listeners explicitly subscribed to "*".
+
+Parameter data can be anything you want the listeners to receive.
 
 If the third parameter is supplied and is false then the listeners will be called in
 synchronous fashion. If the third parameter is true the listeners will be 
