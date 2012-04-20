@@ -1,11 +1,11 @@
 # Squiddle.js #
 
-Squiddle.js is a simple Data Bus implementation in Javascript.
+Squiddle.js is a simple [Data Bus](http://c2.com/cgi/wiki?DataBusPattern "Data Bus Pattern in the c2 wiki") implementation in Javascript.
 It can be used to build event-driven Javascript applications.
 
 ## Documentation ##
 
-### [Constructor] Squiddle( [Object] args* ) ###
+### [Constructor] Squiddle( [Object] args+ ) ###
 
 Creates a new Squiddle object. Takes a configuration object as
 its argument.
@@ -17,7 +17,7 @@ The config object can have the following properties:
  * [Boolean] log: Show information about triggered events in the (web) console?
 
 
-### [Function] Squiddle.prototype.subscribe( [Function] listener, [String] event* ) ###
+### [Function] Squiddle.prototype.subscribe( [Function] listener, [String] event+ ) ###
 
 Subscribes a listener to an event. The event parameter is an optional event name. 
 If no event name is supplied, "*" is assumed which means "listen for all events".
@@ -36,22 +36,22 @@ This function, on the other hand, will be called whenever a "squiddle" event get
 the "squiddle" namespace, e.g. "squiddle.error" or "squiddle.subscribe".
 
 
-### [Function] Squiddle.unsubscribe( [Function] listener, [String] event ) ###
+### [Function] Squiddle.prototype.unsubscribe( [Function] listener, [String] event ) ###
 
 The counterpart to subscribe: Unsubscribes a listener from an event.
 
 
-### [Function] Squiddle.prototype.trigger( [String] event, [Mixed] data*, [Boolean] async* ) ###
+### [Function] Squiddle.prototype.trigger( [String] event, [Mixed] data+, [Boolean] async+ ) ###
 
 Triggers an event so that all interested listeners get called and optionally receive 
 the data supplied by the second parameter. Parameter data can be anything you want.
 
 If the third parameter is supplied and is false then the listeners will be called in
-synchronoud fashion. If the third parameter is true the listeners will be 
+synchronous fashion. If the third parameter is true the listeners will be 
 called asynchronously. Default: true.
 
 
-### [Function] listener( [Mixed] data*, [Object] info* ) ###
+### [Function] listener( [Mixed] data+, [Object] info+ ) ###
 
 This is the signature for a listener. When listeners are called by Squiddle
 they get the data provided by the the one who triggered the event as the first
