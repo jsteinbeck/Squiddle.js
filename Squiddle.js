@@ -43,11 +43,6 @@ var Squiddle = ( function( console )
         this.subscribe( errorListener, "squiddle.error" );
     };
     
-    /**
-    
-        <h2>Squiddle.subscribe( [Function] listener, [String] event )</h2>
-    
-    */
     Sq.prototype.subscribe = function( listener, event )
     {
         if (typeof listener !== "function")
