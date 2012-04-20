@@ -88,6 +88,7 @@ var Squiddle = ( function( console )
     
     Sq.prototype.trigger = function( event, data, async )
     {
+        event = event || "*";
         data = data || null;
         async = async || true;
         async = ( async === false ) ? false : true;

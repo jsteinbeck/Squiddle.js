@@ -36,12 +36,12 @@ This function, on the other hand, will be called whenever a "squiddle" event get
 the "squiddle" namespace, e.g. "squiddle.error" or "squiddle.subscribe".
 
 
-### [Function] Squiddle.prototype.unsubscribe( [Function] listener, [String] event ) ###
+### [Function] Squiddle.prototype.unsubscribe( [Function] listener, [String] event+ ) ###
 
 The counterpart to subscribe: Unsubscribes a listener from an event.
 
 
-### [Function] Squiddle.prototype.trigger( [String] event, [Mixed] data+, [Boolean] async+ ) ###
+### [Function] Squiddle.prototype.trigger( [String] event+, [Mixed] data+, [Boolean] async+ ) ###
 
 Triggers an event so that all interested listeners get called and optionally receive 
 the data supplied by the second parameter. Parameter data can be anything you want.
