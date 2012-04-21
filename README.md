@@ -16,11 +16,11 @@ On node do:
 
 Subscribe a listener to the "my.event" event:
 
-    fn = function( data, info ) 
+    var fn = function( data, info ) 
     {
         console.log( "Received data: ", data );
         console.log( 
-            "Event: " + info.event + "; Subscribers: " + 
+            "Event: " + info.event + "; Subscribers waiting: " + 
             info.getQueueLength() + "/" + info.subscribers
         );
     }
@@ -103,12 +103,12 @@ parameter. If no data has been sent along with the event then Squiddle will inpu
 The second parameter contains information about the event and the queued listeners.
 It has the following properties:
 
- * [String] `event`: The name of the triggered event. This will be exactly the name
+ * __[String]__ `event`: The name of the triggered event. This will be exactly the name
    used for triggering the event, not only the part relevant to the listener.
 
- * [Number] `subscribers`: The total number of listeners subscribed to the triggered event.
+ * __[Number]__ `subscribers`: The total number of listeners subscribed to the triggered event.
 
- * [Function] `getQueueLength()`: Returns the number of listeners for the triggered event
+ * __[Function]__ `getQueueLength()`: Returns the number of listeners for the triggered event
    that haven't been called yet. Listeners can use this information, together with the
    total subscriber count, to determine whether they should perform there task now or
    wait until the queue has been further shortened or emptied.
