@@ -1,4 +1,4 @@
-var Squiddle = ( function( console )
+var Squiddle = ( function( console, exports )
 {
     "use strict";
     
@@ -6,6 +6,8 @@ var Squiddle = ( function( console )
         log: function () {},
         dir: function () {}
     };
+    
+    exports = exports || {};
     
     var Sq, asyncThrow;
     
@@ -21,6 +23,7 @@ var Squiddle = ( function( console )
         this.debug = args.debug || false;
         this.interceptErrors = args.interceptErrors || false;
         this.log = args.log || false;
+        this.logData = args.logData || false;
         
         this.callbacks = {
             "*": []
@@ -41,6 +44,12 @@ var Squiddle = ( function( console )
         };
         
         this.subscribe( errorListener, "squiddle.error" );
+    };
+    
+    Sq.create = function(args)
+    {
+        args = args || {};
+        return new Sq(args);
     };
     
     Sq.prototype.subscribe = function( listener, event )
@@ -132,7 +141,11 @@ var Squiddle = ( function( console )
             subscribers: len,
             getQueueLength: function()
             {
-                return len - j;
+                if (len === 0)
+                {
+                    return 0;
+                }
+                return len - (j + 1);
             }
         };
         
@@ -152,7 +165,10 @@ var Squiddle = ( function( console )
         {
             if ( self.log === true )
             {
-                console.log( "Squiddle event triggered: " + event + "; Subscribers: " + len + "; Data: ", data );
+                console.log( 
+                    "Squiddle event triggered: " + event + "; Subscribers: " + len, 
+                    self.logData === true ? "; Data: " + data : "" 
+                );
             }
             for ( j = 0; j < len; ++j )
             {
@@ -189,6 +205,11 @@ var Squiddle = ( function( console )
         }
     };
     
+    exports.create = Sq;
+    
     return Sq;
     
-}( console || false ));
+}( 
+    typeof console === "undefined" ? false : console, 
+    typeof exports === "undefined" ? false : exports 
+));
