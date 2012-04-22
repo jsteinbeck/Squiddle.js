@@ -1,7 +1,9 @@
 # Squiddle.js #
 
-Squiddle.js is a simple [Data Bus](http://c2.com/cgi/wiki?DataBusPattern "Data Bus Pattern in the c2 wiki") implementation in Javascript.
-It can be used to build event-driven Javascript applications.
+Squiddle.js is a simple [Data Bus](http://c2.com/cgi/wiki?DataBusPattern "Data Bus Pattern in the c2 wiki") 
+implementation in Javascript.
+It can be used to build event-driven Javascript applications and offers
+namespaced events.
 
 
 ## Installation ##
@@ -15,35 +17,65 @@ To install on node, you can just use npm:
 
 To create a new instance in the browser, do:
 
-    var sq = new Squiddle();
+```javascript
+var sq = new Squiddle();
+```
 
 On node do:
 
-    var sq = require( "squiddle" ).create();
+```javascript
+var sq = require( "squiddle" ).create();
+```
 
 Subscribe a listener to the "my.event" event:
 
-    var fn = function( data, info ) 
-    {
-        console.log( "Received data: ", data );
-        console.log( 
-            "Event: " + info.event + "; Subscribers waiting: " + 
-            info.getQueueLength() + "/" + info.subscribers
-        );
-    }
-    sq.subscribe( fn, "my.event" );
+```javascript
+var fn = function( data, info ) 
+{
+    console.log( "Received data: ", data );
+    console.log( 
+        "Event: " + info.event + "; Subscribers waiting: " + 
+        info.getQueueLength() + "/" + info.subscribers
+    );
+}
+sq.subscribe( fn, "my.event" );
+```
 
 Trigger an event:
 
-    sq.trigger( "my.event", "Some data." );
-    // Output: 
-    // "Received data: Some data.
-    //  Event: my.event; Subscribers waiting: 0/1"
+```javascript
+sq.trigger( "my.event", "Some data." );
+// Output: 
+// "Received data: Some data.
+//  Event: my.event; Subscribers waiting: 0/1"
+```
 
 Unsubscribe from an event:
 
-    sq.unsubscribe( fn, "my.event" );
+```javascript
+sq.unsubscribe( fn, "my.event" );
+```
 
+### Namespaced Events ###
+
+The namespacing in Squiddle works as follows:
+
+When subscribing to an event, you subscribe to everything triggered on this namespace
+and below:
+
+```javascript
+sq.subscribe( fn, "my.test" );
+sq.trigger( "my.test" ); // triggered
+sq.trigger( "my.test.error" ); // triggered
+sq.triggered( "my" ); // not triggered
+```
+
+The parts of the namespaces are separated by dots.
+
+```javascript
+sq.trigger( "my.test.2" ); // triggered
+sq.trigger( "my.test2" ); // NOT triggered - different namespace
+```
 
 ## Documentation ##
 
