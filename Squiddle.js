@@ -54,11 +54,17 @@ var Squiddle = ( function( console, exports )
     
     Sq.prototype.subscribe = function( listener, event )
     {
+        if (typeof event !== "undefined" && typeof event !== "string" && typeof event !== "number")
+        {
+            throw new Error("Event names can only be strings or numbers!");
+        }
+        
         if (typeof listener !== "function")
         {
             throw new Error("Only functions may be used as listeners!");
         }
         event = event || '*';
+        
         this.callbacks[ event ] = this.callbacks[ event ] || [];
         this.callbacks[ event ].push( listener );
         this.trigger(
@@ -73,10 +79,16 @@ var Squiddle = ( function( console, exports )
     
     Sq.prototype.unsubscribe = function( listener, event )
     {
+        if (typeof event !== "undefined" && typeof event !== "string" && typeof event !== "number")
+        {
+            throw new Error("Event names can only be strings or numbers!");
+        }
+        
         event = event || '*';
         var cbs = this.callbacks[ event ] || [],
         len = cbs.length,
         i;
+        
         for ( i = 0; i < len; ++i )
         {
             if ( cbs[i] === listener )
@@ -97,6 +109,11 @@ var Squiddle = ( function( console, exports )
     
     Sq.prototype.trigger = function( event, data, async )
     {
+        if (typeof event !== "undefined" && typeof event !== "string" && typeof event !== "number")
+        {
+            throw new Error("Event names can only be strings or numbers!");
+        }
+        
         event = event || "*";
         data = data || null;
         async = async || true;
