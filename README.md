@@ -4,6 +4,13 @@ Squiddle.js is a simple [Data Bus](http://c2.com/cgi/wiki?DataBusPattern "Data B
 It can be used to build event-driven Javascript applications.
 
 
+## Installation ##
+
+To install on node, you can just use npm:
+
+    npm install squiddle
+
+
 ## Usage ##
 
 To create a new instance in the browser, do:
