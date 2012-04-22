@@ -67,7 +67,7 @@ and below:
 sq.subscribe( fn, "my.test" );
 sq.trigger( "my.test" ); // triggered
 sq.trigger( "my.test.error" ); // triggered
-sq.triggered( "my" ); // not triggered
+sq.trigger( "my" ); // not triggered
 ```
 
 The parts of the namespaces are separated by dots.
