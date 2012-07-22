@@ -18,7 +18,7 @@ To install on node, you can just use npm:
 To create a new instance in the browser, do:
 
 ```javascript
-var sq = new Squiddle();
+var sq = Squiddle.create();
 ```
 
 On node do:
@@ -56,6 +56,22 @@ Unsubscribe from an event:
 sq.unsubscribe( fn, "my.event" );
 ```
 
+### Injecting Squiddle ###
+
+Squiddle can be injected into objects or functions.
+
+In the browser:
+
+```javascript
+Squiddle.inject( obj );
+```
+
+Node.js:
+
+```javascript
+require("squiddle").inject( obj );
+```
+
 ### Namespaced Events ###
 
 The namespacing in Squiddle works as follows:
@@ -76,6 +92,12 @@ The parts of the namespaces are separated by dots.
 sq.trigger( "my.test.2" ); // triggered
 sq.trigger( "my.test2" ); // NOT triggered - different namespace
 ```
+
+## Testing ##
+
+The Squiddle repository contains a test. To run it, you need [RocketScience.js](https://github.com/jsteinbeck/RocketScience.js "RocketScience.js")
+in a directory on the same level as the Squiddle main directory.
+
 
 ## Documentation ##
 

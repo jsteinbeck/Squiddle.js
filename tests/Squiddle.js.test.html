@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>RocketScience.js</title>
+        <link rel="stylesheet" type="text/css" href="../../RocketScience.js/css/screen.css" />
+    </head>
+    <body>
+        <script src="../Squiddle.js"></script>
+        <script src="../../RocketScience.js/RocketScience.js"></script>
+        <script src="Squiddle.js.test.js"></script>
+        <script>
+            var monitor, consoleMonitor;
+            monitor = new ROCKET.monitors.HTML();
+            monitor.switchOn();
+            consoleMonitor = new ROCKET.monitors.Console();
+            consoleMonitor.switchOn();
+            squiddleTest.run();
+        </script>
+    </body>
+</html>
