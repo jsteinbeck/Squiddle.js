@@ -3,5 +3,5 @@
     "main": "Squiddle.js",
     "description": "A simple Data Bus implementation for node and the web.",
     "author": "Jonathan Steinbeck <jonathan@steinbeck.in>",
-    "version": "12.7.22"
+    "version": "12.8.13"
 }
