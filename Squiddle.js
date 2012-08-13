@@ -224,16 +224,16 @@ var Squiddle = ( function( console, exports )
     Sq.inject = function (obj, args)
     {
         args = args || {};
-        obj.squiddle = new Sq(args);
+        var squid = new Sq(args);
         
         obj.subscribe = function (listener, event) 
         { 
-            event = event || "*"; this.squiddle.subscribe(listener, event); 
+            event = event || "*"; squid.subscribe(listener, event); 
         };
         
         obj.unsubscribe = function (listener, event) 
         { 
-            event = event || "*"; this.squiddle.unsubscribe(listener, event); 
+            event = event || "*"; squid.unsubscribe(listener, event); 
         };
         
         obj.trigger = function (event, data, async)
@@ -241,7 +241,7 @@ var Squiddle = ( function( console, exports )
             event = event || "*";
             data = data || null;
             async = ( typeof async !== "undefined" && async === false ) ? false : true;
-            this.squiddle.trigger(event, data, async);
+            squid.trigger(event, data, async);
         };
     };
     

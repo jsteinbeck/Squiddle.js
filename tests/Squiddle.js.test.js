@@ -139,16 +139,6 @@ var squiddleTest = ( function( ROCKET, Squiddle, exports )
                 );
                 
                 this.assert(
-                    params.squiddle !== null,
-                    "Object does not contain a squiddle property."
-                );
-                
-                this.assert(
-                    params.squiddle instanceof sq.constructor,
-                    "Object does not contain a squiddle instance."
-                );
-                
-                this.assert(
                     typeof params.unsubscribe === "function",
                     "Object does not have an unsubscribe method."
                 );
