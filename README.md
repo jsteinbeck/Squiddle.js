@@ -50,6 +50,12 @@ sq.trigger( "my.event", "Some data." );
 //  Event: my.event; Subscribers waiting: 0/1"
 ```
 
+Trigger an event once:
+
+```javascript
+sq.once("my.event", "Some data.");
+```
+
 Unsubscribe from an event:
 
 ```javascript
@@ -138,6 +144,11 @@ the `"squiddle"` namespace, e.g. `"squiddle.error"` or `"squiddle.subscribe"`.
 The counterpart to subscribe: Unsubscribes a listener from an event.
 
 
+### [Function] Squiddle.prototype.once([Function] listener, [String] event+) ###
+
+The same as subscribe(), but the listener will be unsubscribed after the event it is subscribed to is triggered.
+
+
 ### [Function] Squiddle.prototype.trigger( [String] event+, [Mixed] data+, [Boolean] async+ ) ###
 
 Triggers an event so that all interested listeners get called and optionally receive 
@@ -153,7 +164,6 @@ Parameter data can be anything you want the listeners to receive.
 If the third parameter is supplied and is false then the listeners will be called in
 synchronous fashion. If the third parameter is true the listeners will be 
 called asynchronously. Default: true.
-
 
 ### [Function] listener( [Mixed] data+, [Object] info+ ) ###
 

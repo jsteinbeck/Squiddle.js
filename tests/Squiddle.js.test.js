@@ -1,7 +1,7 @@
-var squiddleTest = ( function( ROCKET, Squiddle, exports )
-{
-        var lab, suite, suite2, suite3, sq,
-            case1, case2, case3, case4, case5, case6, case7, case3_1, case3_2;
+var squiddleTest = ( function( ROCKET, Squiddle, exports ) {
+    
+        var lab, suite, suite2, suite3, sq;
+        var case1, case2, case3, case4, case5, case6, case7, case8, case3_1, case3_2;
             
         exports = exports || {};
         
@@ -17,19 +17,16 @@ var squiddleTest = ( function( ROCKET, Squiddle, exports )
 
         case1 = new ROCKET.TestCase(
             "Subscribed listeners must be executed when their event is triggered.",
-            function(params)
-            {
-                var fn = function(data) 
-                    { 
-                        params.value = true;
-                    };
-//                 sq.log = true;
+            function(params) {
+                var fn = function(data) { 
+                    params.value = true;
+                };
+                
                 sq = Squiddle.create();
                 sq.subscribe(fn, "squiddle_test");
                 sq.trigger("squiddle_test", params);
             },
-            function(params)
-            {
+            function(params) {
                 this.assert(params.value === true, 
                     "Variable params.value should be true.");
             },
@@ -41,19 +38,17 @@ var squiddleTest = ( function( ROCKET, Squiddle, exports )
         
         case2 = new ROCKET.TestCase(
             "Unsubscribed listeners shouldn't be called when triggering the event after unsubscribing.",
-            function(params)
-            {
-                var fn = function(data) 
-                { 
+            function(params) {
+                
+                var fn = function(data) { 
                     params.value = true;
                 };
-//                 sq.log = true;
+                
                 sq.subscribe(fn, "squiddle_test2");
                 sq.unsubscribe(fn, "squiddle_test2");
                 sq.trigger("squiddle_test2", params);
             },
-            function(params)
-            {
+            function(params) {
                 this.assert(params.value === false, 
                     "Variable params.value should be false.");
             },
@@ -65,20 +60,18 @@ var squiddleTest = ( function( ROCKET, Squiddle, exports )
         
         case3 = new ROCKET.TestCase(
             "A listener must be called exactly the number of times the subscribed event is triggered.",
-            function(params)
-            {
-                var fn = function(data) 
-                { 
+            function(params) {
+                
+                var fn = function(data) { 
                     params.count += 1;
                 };
-//                 sq.log = true;
+                
                 sq.subscribe(fn, "squiddle_test3");
                 sq.trigger("squiddle_test3", params);
                 sq.trigger("squiddle_test3", params);
                 sq.trigger("squiddle_test3", params);
             },
-            function(params)
-            {
+            function(params) {
                 this.assertEquals(
                     params.count, 3, 
                     "Variable params.count should be 3."
@@ -92,18 +85,16 @@ var squiddleTest = ( function( ROCKET, Squiddle, exports )
         
         case6 = new ROCKET.TestCase(
             "Data provided when triggering must be made available in subscribed listeners.",
-            function(params)
-            {
-                var fn = function(data) 
-                { 
+            function(params) {
+                
+                var fn = function(data) { 
                     params.secret = data;
                 };
-//                 sq.log = true;
+                
                 sq.subscribe(fn, "squiddle_test7");
                 sq.trigger("squiddle_test7", "this is a secret");
             },
-            function(params)
-            {
+            function(params) {
                 this.assertEquals(
                     params.secret, "this is a secret", 
                     "Listener didn't receive the expected data."
@@ -117,22 +108,20 @@ var squiddleTest = ( function( ROCKET, Squiddle, exports )
         
         case7 = new ROCKET.TestCase(
             "A squiddle instance can be injected into objects.",
-            function (params)
-            {
+            function (params) {
+                
                 var fn;
                 
                 Squiddle.inject(params);
                 
-                fn = function (data) 
-                { 
+                fn = function (data) { 
                     params.secret = data;
                 };
                 
                 params.subscribe(fn, "squiddle_test_case7");
                 params.trigger("squiddle_test_case7", "this is a secret");
             },
-            function (params)
-            {
+            function (params) {
                 this.assertEquals(
                     params.secret, "this is a secret", 
                     "Listener didn't receive the expected data."
@@ -153,12 +142,36 @@ var squiddleTest = ( function( ROCKET, Squiddle, exports )
                                     wait: 20
             }
         );
+        
+        case8 = new ROCKET.TestCase(
+            "A listener subscribed using once() should only be called once.",
+            function (params) {
+                var sq = new Squiddle(), fn;
+                
+                params.count = 0;
+                
+                fn = function () {
+                    params.count += 1;
+                };
+                
+                sq.once(fn, "testEvent");
+                
+                sq.trigger("testEvent", null, false);
+                sq.trigger("testEvent", null, false);
+                sq.trigger("testEvent", null, false);
+            },
+            function (params) {
+                this.assert(params.count === 1, "Property params.count was increased more than once.");
+            },
+            {wait: 20}
+        );
 
         suite.addTestCase(case1);
         suite.addTestCase(case2);
         suite.addTestCase(case3);
         suite.addTestCase(case6);
         suite.addTestCase(case7);
+        suite.addTestCase(case8);
         lab.addTestSuite(suite);
         
         
@@ -167,22 +180,22 @@ var squiddleTest = ( function( ROCKET, Squiddle, exports )
         
         case4 = new ROCKET.TestCase(
             "Listeners can get the number of other listeners subscribed to the same event.",
-            function(params)
-            {
-                var fn = function(data, info) 
-                    { 
-                        params.listeners = info.subscribers;
-                    },
-                    fn2 = function() {},
-                    fn3 = function() {};
-//                     sq.log = true;
-                    sq.subscribe(fn, "squiddle_test4");
-                    sq.subscribe(fn2, "squiddle_test4");
-                    sq.subscribe(fn3, "squiddle_test4");
-                    sq.trigger("squiddle_test4", params);
+            function(params) {
+                var fn, fn2, fn3;
+                
+                fn = function(data, info) {
+                    params.listeners = info.subscribers;
+                };
+                
+                fn2 = function() {};
+                fn3 = function() {};
+                
+                sq.subscribe(fn, "squiddle_test4");
+                sq.subscribe(fn2, "squiddle_test4");
+                sq.subscribe(fn3, "squiddle_test4");
+                sq.trigger("squiddle_test4", params);
             },
-            function(params)
-            {
+            function(params) {
                 this.assertEquals(
                     params.listeners, 3, 
                     "Variable params.listeners should be 3."
@@ -196,21 +209,21 @@ var squiddleTest = ( function( ROCKET, Squiddle, exports )
         
         case5 = new ROCKET.TestCase(
             "Listeners can get the name of the triggered event.",
-            function(params)
-            {
-                var fn = function(data, info) 
-                    { 
-                        params.name = info.event;
-                    },
-                    fn2 = function() {},
-                    fn3 = function() {};
-//                 sq.log = true;
+            function(params) {
+                var fn, fn2, fn3;
+                
+                fn = function(data, info) {
+                    params.name = info.event;
+                };
+                
+                fn2 = function() {};
+                fn3 = function() {};
+                
                 sq.subscribe(fn, "squiddle_test5");
                 sq.subscribe(fn, "squiddle_test6");
                 sq.trigger("squiddle_test5", params);
             },
-            function(params)
-            {
+            function(params) {
                 this.assertEquals(
                     params.name, "squiddle_test5", 
                     "Found wrong event name."
@@ -232,80 +245,81 @@ var squiddleTest = ( function( ROCKET, Squiddle, exports )
         
         case3_1 = new ROCKET.TestCase(
             "Only functions should be able to subscribe to an event.",
-            function(params)
-            {
+            function(params) {
+                
                 var t;
-//                 sq.log = true;
+                
                 t = false;
-                try
-                {
+                
+                try {
                     sq.subscribe( null, "squiddle_test8" );
                     t = true;
                 }
-                catch ( e ) {}
-                this.assertEquals( t, false, "Subscribing null does not throw an Error." );
+                catch (e) {}
+                
+                this.assertEquals(t, false, "Subscribing null does not throw an Error.");
                 
                 t = false;
-                try
-                {
-                    sq.subscribe( false, "squiddle_test8" );
+                
+                try {
+                    sq.subscribe(false, "squiddle_test8");
                     t = true;
                 }
                 catch ( e ) {}
-                this.assertEquals( t, false, "Subscribing false does not throw an Error." );
+                
+                this.assertEquals(t, false, "Subscribing false does not throw an Error.");
                 
                 t = false;
-                try
-                {
-                    sq.subscribe( {}, "squiddle_test8" );
+                
+                try {
+                    sq.subscribe({}, "squiddle_test8");
                     t = true;
                 }
                 catch ( e ) {}
+                
                 this.assertEquals( t, false, "Subscribing {} does not throw an Error." );
                 
                 t = false;
-                try
-                {
+                
+                try {
                     sq.subscribe( [], "squiddle_test8" );
                     t = true;
                 }
                 catch ( e ) {}
-                this.assertEquals( t, false, "Subscribing [] does not throw an Error." );
                 
+                this.assertEquals( t, false, "Subscribing [] does not throw an Error." );
             },
-            function(params)
-            {
-            },
-            {
-                wait: 20
-            }
+            function(params) {},
+            {wait: 20}
         );
         
         case3_2 = new ROCKET.TestCase(
             "Event names can only be strings or numbers.",
-            function()
-            {
+            function() {
+                
                 var t = false;
-                try
-                {
+                
+                try {
                     sq.subscribe( function() {}, [] );
                     t = true;
                 }
                 catch( e ) {}
+                
                 this.assertEquals( t, false, "Using an array as event name on subscribe did not fail!" );
                 
                 t = false;
-                try
-                {
+                
+                try {
                     sq.subscribe( function() {}, {} );
                     t = true;
                 }
                 catch( e ) {}
+                
                 this.assertEquals( t, false, "Using an object as event name on subscribe did not fail!" );
                 
                 t = false;
-                try
-                {
+                
+                try {
                     sq.subscribe( function() {}, function() {} );
                     t = true;
                 }
@@ -314,85 +328,93 @@ var squiddleTest = ( function( ROCKET, Squiddle, exports )
                 
                 
                 t = false;
-                try
-                {
+                
+                try {
                     sq.unsubscribe( function() {}, null );
                     t = true;
                 }
                 catch( e ) {}
+                
                 this.assertEquals( t, false, "Using null as event name on unsubscribe did not fail!" );
+                
                 t = false;
-                try
-                {
+                
+                try {
                     sq.unsubscribe( function() {}, [] );
                     t = true;
                 }
                 catch( e ) {}
+                
                 this.assertEquals( t, false, "Using an array as event name on unsubscribe did not fail!" );
                 
                 t = false;
-                try
-                {
+                
+                try {
                     sq.unsubscribe( function() {}, {} );
                     t = true;
                 }
                 catch( e ) {}
+                
                 this.assertEquals( t, false, "Using an object as event name on unsubscribe did not fail!" );
                 
                 t = false;
-                try
-                {
+                
+                try {
                     sq.unsubscribe( function() {}, null );
                     t = true;
                 }
                 catch( e ) {}
+                
                 this.assertEquals( t, false, "Using null as event name on unsubscribe did not fail!" );
                 
                 t = false;
-                try
-                {
+                
+                try {
                     sq.unsubscribe( function() {}, function() {} );
                     t = true;
                 }
                 catch( e ) {}
+                
                 this.assertEquals( t, false, "Using a function as event name on unsubscribe did not fail!" );
                 
-                
-                
                 t = false;
-                try
-                {
+                
+                try {
                     sq.trigger( [] );
                     t = true;
                 }
                 catch( e ) {}
+                
                 this.assertEquals( t, false, "Using an array as event name on trigger did not fail!" );
                 
                 t = false;
-                try
-                {
+                
+                try {
                     sq.trigger( {} );
                     t = true;
                 }
                 catch( e ) {}
+                
                 this.assertEquals( t, false, "Using an object as event name on trigger did not fail!" );
                 
                 t = false;
-                try
-                {
+                
+                try {
                     sq.trigger( null );
                     t = true;
                 }
                 catch( e ) {}
+                
                 this.assertEquals( t, false, "Using null as event name on trigger did not fail!" );
                 
                 t = false;
-                try
-                {
+                
+                try {
                     sq.trigger( function() {} );
                     t = true;
                 }
                 catch( e ) {}
+                
                 this.assertEquals( t, false, "Using a function as event name on trigger did not fail!" );
             }
         );
